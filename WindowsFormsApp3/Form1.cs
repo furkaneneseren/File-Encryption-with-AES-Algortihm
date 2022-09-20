@@ -26,11 +26,10 @@ namespace WindowsFormsApp3
         string str_Key;
         // byte[] encrypted;
 
-        public string strIV = "1234567890123456";//вектор инициализации в строковом представлении
-        byte[] vect;//вектор инициализации
+        public string strIV = "1234567890123456";
+        byte[] vect;
 
         private static Random rng = new Random();
-        //функция перетасовки списка(для ключа):
         public List<T> Shuffle<T>(List<T> list)
         {
             int n = list.Count;
@@ -184,7 +183,7 @@ namespace WindowsFormsApp3
         {
             try
             {
-                if (radioButton1.Checked)// если нужно закодировать обычный текст:
+                if (radioButton1.Checked)
                 {
                     if (textBox3.Text == "")
                     {
@@ -221,14 +220,14 @@ namespace WindowsFormsApp3
                         string filenameWE = Path.GetFileNameWithoutExtension(path);
 
                         File.Delete(path);
-                        //записываем в файл зашифрованный байтовый массив:
+                        
                         path.Replace(filename, filenameWE);
 
                         File.WriteAllBytes(path, encrypted);
 
                     }
-                }  /////////////////////////////////////////////////////             
-                else//если нужно закодировать файл
+                }     
+                else
                 {
                     byte[] fileInBytes = File.ReadAllBytes(textBox3.Text);
 
@@ -294,7 +293,7 @@ namespace WindowsFormsApp3
         {
             try
             {
-                if (radioButton1.Checked)//если нужно декодировать обычный текст:
+                if (radioButton1.Checked)
                 {
                     string roundtrip = "";
                     using (AesCryptoServiceProvider myAes = new AesCryptoServiceProvider())
@@ -306,7 +305,6 @@ namespace WindowsFormsApp3
 
                         String path = textBox3.Text;
                         //String encoded = ExtractTxtFile(path);
-                        //считываем байты из файла в байтовый массив:
                         byte[] encrypted = File.ReadAllBytes(path);
 
                         //String original = textBox2.Text;
@@ -321,23 +319,21 @@ namespace WindowsFormsApp3
                     }
                     textBox2.Text = roundtrip;
                 }
-                else//если нужно декодировать файл
+                else
                 {
-                    ////////////////////////////////////////////////////////////////
-                    //путь:
+                    
                     String path = textBox3.Text;
                     string roundtrip = "";
 
                     using (AesCryptoServiceProvider myAes = new AesCryptoServiceProvider())
                     {
-                        //ключь:
+                        
                         if (textBox1.Text != "") str_Key = textBox1.Text;
                         byte[] byte_key = Encoding.ASCII.GetBytes(str_Key);
                         myAes.Key = byte_key;
 
 
                         //String encoded = ExtractTxtFile(path);
-                        //считываем байты из файла в байтовый массив:
                         byte[] encrypted = File.ReadAllBytes(path);
 
                         //String original = textBox2.Text;
@@ -350,7 +346,6 @@ namespace WindowsFormsApp3
 
 
                     }
-                    //удаляем закодированный файл:
                     File.Delete(path);
                     byte[] FileInBytes = Convert.FromBase64String(roundtrip);//Encoding.ASCII.GetBytes(roundtrip);
 
@@ -413,7 +408,6 @@ namespace WindowsFormsApp3
         {
             try
             {
-                //проверяем свойство KeyIsHidden, отвечающее за то, является ли ключ скрытым:
                 if (Convert.ToBoolean(WindowsFormsApp3.Properties.Settings.Default["KeyIsHidden"]))
                 {
                     WindowsFormsApp3.Properties.Settings.Default["KeyIsHidden"] = false;
